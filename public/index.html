@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FB Auto Poster V3 — Smart Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-container">
+        <header>
+            <div class="glow-orb"></div>
+            <h1>FB Auto Poster <span>V3</span></h1>
+            <p>Smart Engine — 3x Parallel • Auto-Dedup • Verified Posting</p>
+            <div class="feature-badges">
+                <span class="badge badge-blue">⚡ 3 Tab Paralel</span>
+                <span class="badge badge-purple">🧠 Smart Dedup</span>
+                <span class="badge badge-green">✅ Verified Log</span>
+                <span class="badge badge-pink">🔗 URL Tracking</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Step 1: Auth -->
+            <section id="step-auth" class="step-card active">
+                <h2>1. Koneksi Facebook</h2>
+                <button id="btn-check-auth" class="btn primary">Cek Status Login</button>
+                <div id="auth-status" class="status-box hidden">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- Step 2: Target -->
+            <section id="step-target" class="step-card disabled">
+                <h2>2. Pilih Target Grup</h2>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="tab-scrape">Tarik Baru</button>
+                    <button class="tab-btn" data-target="tab-saved">Riwayat Tersimpan</button>
+                </div>
+
+                <div class="tab-content active" id="tab-scrape">
+                    <div class="input-group">
+                        <input type="text" id="input-keyword" placeholder="Ketik kata kunci (Kosongkan u/ semua grup)">
+                        <button id="btn-scrape" class="btn secondary">Tarik Data</button>
+                    </div>
+                    <div id="scrape-results" class="results-box hidden">
+                        <div class="select-all-wrapper">
+                            <input type="checkbox" id="check-all"> <label for="check-all">Pilih Semua</label>
+                        </div>
+                        <div id="group-list" class="checkbox-grid"></div>
+                        <div class="save-campaign-box">
+                            <input type="text" id="input-campaign-name" placeholder="Beri nama riwayat ini (opsional)">
+                            <button id="btn-save-campaign" class="btn outline">Simpan Pilihan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-saved">
+                    <select id="select-campaign" class="glass-select">
+                        <option value="">-- Pilih Riwayat Tersimpan --</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Step 3: Content -->
+            <section id="step-content" class="step-card disabled">
+                <h2>3. Teks & Gambar</h2>
+                <div class="input-group">
+                    <select id="select-draft" class="glass-select">
+                        <option value="">-- Kosongkan Form / Pilih Draft Tersimpan --</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <div style="flex: 2;">
+                        <label>Judul Barang <small style="color:var(--neon-pink)">(Spintax: {opsi1|opsi2})</small></label>
+                        <input type="text" id="input-title" placeholder="Cth: {Redmi Pad 2|Xiaomi Redmi Pad 2} Baru Segel">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Harga (Angka)</label>
+                        <input type="text" id="input-price" placeholder="Cth: 2300000">
+                    </div>
+                </div>
+
+                <div class="input-group vertical">
+                    <label>Teks Jualan <small style="color:var(--neon-pink)">(Spintax: {Halo|Hai|Hey})</small></label>
+                    <textarea id="input-text" rows="6" placeholder="Tulis teks jualan dengan spintax untuk variasi unik tiap posting..."></textarea>
+                </div>
+                <div class="save-campaign-box" style="margin-bottom: 15px; margin-top: -5px;">
+                    <input type="text" id="input-draft-name" placeholder="Beri nama untuk menyimpan draft teks ini">
+                    <button id="btn-save-draft" class="btn outline">Simpan Draft</button>
+                </div>
+                <div class="input-group vertical">
+                    <label>Pilih Gambar (Bisa pilih lebih dari 1 file)</label>
+                    <div class="custom-file-wrapper">
+                        <input type="file" id="image-upload" accept="image/*,video/mp4" multiple hidden>
+                        <label for="image-upload" class="btn secondary upload-btn">
+                            📁 Browse Files...
+                        </label>
+                        <span id="file-chosen-text" class="file-chosen-text">Belum ada file dipilih</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Execute -->
+            <section id="step-execute" class="step-card disabled">
+                <h2>4. Eksekusi</h2>
+
+                <!-- Live Stats -->
+                <div id="live-stats" class="stats-grid hidden">
+                    <div class="stat-card stat-success">
+                        <div class="stat-number" id="stat-success">0</div>
+                        <div class="stat-label">✅ Terposting</div>
+                    </div>
+                    <div class="stat-card stat-skip">
+                        <div class="stat-number" id="stat-skip">0</div>
+                        <div class="stat-label">⏩ Skip (Dedup)</div>
+                    </div>
+                    <div class="stat-card stat-fail">
+                        <div class="stat-number" id="stat-fail">0</div>
+                        <div class="stat-label">❌ Gagal</div>
+                    </div>
+                    <div class="stat-card stat-batch">
+                        <div class="stat-number" id="stat-batch">0/0</div>
+                        <div class="stat-label">🔄 Batch</div>
+                    </div>
+                </div>
+
+                <button id="btn-start" class="btn blast">MULAI POSTING 3x PARALEL 🔥</button>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Floating Console -->
+    <div id="floating-console" class="console-card hidden">
+        <div class="console-header" id="console-header">
+            <span id="console-title">Live Console</span>
+            <div class="actions">
+                <span id="btn-min-console">▼</span>
+                <span id="btn-close-console">✖</span>
+            </div>
+        </div>
+        <div id="console-body" class="console-body">
+            <p class="log-info">Menunggu perintah...</p>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

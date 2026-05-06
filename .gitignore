@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment & Secrets
+.env
+
+# Facebook Session Data (PENTING: Jangan di-upload agar akun tidak dibajak)
+session/
+.wwebjs_auth/
+.wwebjs_cache/
+
+# User Data & Configs
+campaigns.json
+drafts.json
+config.js
+
+# Logs & Debug
+*.log
+failed_post.txt
+success_post.txt
+debug_*.html
+debug_*.js
+
+# OS
+.DS_Store
+Thumbs.db
